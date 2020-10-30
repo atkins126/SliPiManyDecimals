@@ -8,7 +8,7 @@ https://rosettacode.org/wiki/Pi#Delphi
 interface
 
 uses
-  Classes, Controls, Forms, StdCtrls, Windows;
+  Classes, Controls, Forms, StdCtrls;
 
 type
   TForm1 = class(TForm)
@@ -109,7 +109,7 @@ begin
       SetLength(temp, L);
       for j := 1 to L do
         temp[j] := '0';
-      temp := temp + SysUtils.IntToStr(E + D div 100);
+      temp := temp + IntToStr(E + D div 100);
       t := Length(temp);
       AddText(Copy(temp, t - L + 1, L));
       E := D mod 100;
@@ -118,16 +118,14 @@ begin
     dec(C, 7);
     //Me: added to allow interrupting calculation
     Application.ProcessMessages;
-    if not working then
-      Break;
-  until (C < 14);
+  until (C < 14) or not Working;
   FlushText();
 
   // Delphi addition: Write screen output to a file for checking
-  h := SysUtils.FileCreate('PiDigits.txt'); // h = file handle
+  h := FileCreate('PiDigits.txt'); // h = file handle
   for j := 0 to memScreen.Lines.Count - 1 do
-    SysUtils.FileWrite(h, memScreen.Lines[j][1], Length(memScreen.Lines[j]));
-  SysUtils.FileClose(h);
+    FileWrite(h, memScreen.Lines[j][1], Length(memScreen.Lines[j]));
+  FileClose(h);
 end;
 
 // This Delphi version builds each screen line in a buffer and puts
